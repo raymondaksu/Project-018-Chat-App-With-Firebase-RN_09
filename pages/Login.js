@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   SafeAreaView,
   View,
@@ -17,6 +17,8 @@ import auth from '@react-native-firebase/auth';
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const inputRefMail = useRef();
+  const inputRefPassword = useRef();
 
   async function login() {
     // auth()
@@ -28,7 +30,9 @@ const Login = (props) => {
         Alert.alert('ClarusChat', resolveAuthError('auth/null-value'));
       } else {
         await auth().signInWithEmailAndPassword(email, password);
-        props.navigation.navigate("Timeline");
+        props.navigation.navigate('Timeline');
+        inputRefMail.current.clear();
+        inputRefPassword.current.clear();
       }
     } catch (error) {
       Alert.alert('ClarusChat', resolveAuthError(error.code));
@@ -48,6 +52,7 @@ const Login = (props) => {
           </View>
           <View style={{flex: 1}}>
             <Input
+              reference={inputRefMail}
               inputProps={{
                 placeholder: 'Type your email address..',
                 keyboardType: 'email-address',
@@ -55,6 +60,7 @@ const Login = (props) => {
               onType={(value) => setEmail(value)}
             />
             <Input
+              reference={inputRefPassword}
               inputProps={{
                 placeholder: 'Type your password..',
                 secureTextEntry: true,

@@ -2,17 +2,17 @@ import moment from 'moment';
 import React, {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
-import {SafeAreaView, View, Text, FlatList} from 'react-native';
+import {SafeAreaView, View, FlatList} from 'react-native';
 
 import {timelinePage} from './styles';
 import {PostItem, PostInput, Header, TopicSelectModal} from '../components';
 
-const user = auth().currentUser;
 
 const Timeline = () => {
   const [postList, setPostList] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [topicModalFlag, setTopicModalFlag] = useState(true);
+  const user = auth().currentUser ? auth().currentUser : 'Default';
 
   const selectingTopic = (value) => {
     database().ref(`/${selectedTopic}/`).off('value');
